@@ -27,6 +27,7 @@ const REFRESH_TOKEN_SECRET_SIGNATURE = 'fcCjhnpeopVn2Hg1jG75MUi62051yL'
 
 const login = async (req, res) => {
   try {
+      console.log(req.body)
     if (req.body.email !== MOCK_DATABASE.USER.EMAIL || req.body.password !== MOCK_DATABASE.USER.PASSWORD) {
       res.status(StatusCodes.FORBIDDEN).json({ message: 'Your email or password is incorrect!' })
       return
@@ -69,6 +70,7 @@ const login = async (req, res) => {
       accessToken,
       refreshToken
     })
+    console.log(res)
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error)
   }

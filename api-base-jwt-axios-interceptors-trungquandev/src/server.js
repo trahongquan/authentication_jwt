@@ -11,6 +11,12 @@ const START_SERVER = () => {
   // Init Express App
   const app = express()
 
+  // // config quyền cho phép truy cập từ domain và cổng khác tới server
+  // app.use(cors({
+  //   origin: 'http://localhost:5173',
+  //   credentials: true
+  // }));
+
   // Fix Cache from disk from ExpressJS
   app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store')
