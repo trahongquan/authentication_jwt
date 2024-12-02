@@ -1,6 +1,7 @@
 // Author: TrungQuanDev: https://youtube.com/@trungquandev
 import { StatusCodes } from 'http-status-codes'
 import ms from 'ms'
+import { JwtProvider } from '~/providers/JwtProvider'
 
 /**
  * Mock nhanh thông tin user thay vì phải tạo Database rồi query.
@@ -33,7 +34,41 @@ const login = async (req, res) => {
 
     // Trường hợp nhập đúng thông tin tài khoản, tạo token và trả về cho phía Client
 
-    res.status(StatusCodes.OK).json({ message: 'Login API success!' })
+    const userInfo = {
+      id: MOCK_DATABASE.USER.ID,
+      email: MOCK_DATABASE.USER.EMAIL
+    }
+
+    const accessToken = await JwtProvider.generateToken(
+      userInfo,
+      ACCESS_TOKEN_SECRET_SIGNATURE,
+      '1h'
+    )
+
+    const refreshToken = await JwtProvider.generateToken(
+      userInfo,
+      ACCESS_TOKEN_SECRET_SIGNATURE,
+      '14 days'
+    )
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: ms('14 days')
+    })
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: ms('14 days')
+    })
+
+    res.status(StatusCodes.OK).json({
+      ...userInfo,
+      accessToken,
+      refreshToken
+    })
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error)
   }
