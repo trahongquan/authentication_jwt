@@ -1,25 +1,25 @@
 // Author: TrungQuanDev: https://youtube.com/@trungquandev
+import { Card as MuiCard } from '@mui/material'
+import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import { Card as MuiCard } from '@mui/material'
 import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
-import Zoom from '@mui/material/Zoom'
-import Alert from '@mui/material/Alert'
-import { useForm } from 'react-hook-form'
 import Typography from '@mui/material/Typography'
-import TrungQuanDevIcon from '../assets/trungquandev-logo.png'
-import authorizedAxiosInstance from '~/utils/authorizedAxios';
-import { toast } from 'react-toastify'
-import { API_ROOT } from '~/utils/constants'
+import Zoom from '@mui/material/Zoom'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import authorizedAxiosInstance from '~/utils/authorizedAxios'
+import { API_ROOT } from '~/utils/constants'
+import TrungQuanDevIcon from '../assets/trungquandev-logo.png'
 
 function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const navigate = useNavigate();
   const submitLogIn = async (data) => {
     const res = await authorizedAxiosInstance.post(`${API_ROOT}/v1/users/login`, data)
-    toast.success(res.data?.accessToken)
+    toast.success(res.data?.message)
     // toast.success("Đăng nhập thành công!")
 
     const userInfo = {

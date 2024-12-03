@@ -1,12 +1,12 @@
 // Author: TrungQuanDev: https://youtube.com/@trungquandev
-import { useEffect, useState } from 'react'
+import { CircularProgress } from '@mui/material'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import CircularProgress from '@mui/material/CircularProgress'
 import Divider from '@mui/material/Divider'
-import authorizedAxiosInstance from '~/utils/authorizedAxios'
+import Typography from '@mui/material/Typography'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import authorizedAxiosInstance from '~/utils/authorizedAxios'
 import { API_ROOT } from '~/utils/constants'
 
 function Dashboard() {

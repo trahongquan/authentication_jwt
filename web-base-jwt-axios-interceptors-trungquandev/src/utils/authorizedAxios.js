@@ -1,5 +1,5 @@
 // Author: TrungQuanDev: https://youtube.com/@trungquandev
-import axios from 'axios'
+import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const authorizedAxiosInstance = axios.create()
@@ -13,7 +13,7 @@ authorizedAxiosInstance.interceptors.request.use((config) => {
     // Do something before request is sent
     const accessToken = localStorage.getItem('accessToken')
     if(accessToken){
-        config.headers.Authorization = `Bearer ${accessToken}}` //Tiêu chuẩn OAuth 2.0
+        config.headers.Authorization = `Bearer ${accessToken}` //Tiêu chuẩn OAuth 2.0
     }
 
     return config;
