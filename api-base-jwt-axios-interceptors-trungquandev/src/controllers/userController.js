@@ -34,8 +34,8 @@ const login = async (req, res) => {
     const accessToken = await JwtProvider.generateToken(
       userInfo,
       ACCESS_TOKEN_SECRET_SIGNATURE,
-      5
-      // '1h'
+      // 5
+      '1h'
     )
 
     const refreshToken = await JwtProvider.generateToken(
@@ -79,10 +79,38 @@ const logout = async (req, res) => {
 
 const refreshToken = async (req, res) => {
   try {
-    // Do something
-    res.status(StatusCodes.OK).json({ message: ' Refresh Token API success.' })
+    const refreshTokenFromCookie = req.cookies?.refreshToken
+    const refreshTokenFromBody = req.body?.refreshToken
+
+    const refreshTokenDecode = await JwtProvider.verifyToken(
+      // refreshTokenFromCookie,
+      refreshTokenFromBody,
+      REFRESH_TOKEN_SECRET_SIGNATURE
+    )
+
+    const userInfo = {
+      id: refreshTokenDecode.id,
+      email: refreshTokenDecode.email
+    }
+    const accessToken = await JwtProvider.generateToken(
+      userInfo,
+      ACCESS_TOKEN_SECRET_SIGNATURE,
+      // 5
+      '1h'
+    )
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: ms('14 days')
+    })
+    
+    
+
+    res.status(StatusCodes.OK).json({ accessToken })
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error)
+    console.log(error.message)
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message: 'Refresh Token API failed'})
   }
 }
 
